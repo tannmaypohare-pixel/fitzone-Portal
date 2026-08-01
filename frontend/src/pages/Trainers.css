@@ -1,0 +1,129 @@
+.trainers-page {
+    padding: 30px;
+    background: #0b1020;
+    min-height: 100vh;
+    color: white;
+}
+
+/* Header */
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.page-header h1 {
+    font-size: 56px;
+    color: white;
+}
+
+.page-header p {
+    color: #b8b4d9;
+}
+
+/* Add Button */
+
+.add-btn {
+    padding: 14px 24px;
+    border: none;
+    border-radius: 15px;
+    background: white;
+    color: #7c3aed;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* Table Box */
+
+.trainer-table {
+    background: linear-gradient(
+        135deg,
+        #171b33,
+        #24204f
+    );
+
+    padding: 25px;
+    border-radius: 30px;
+}
+
+/* Table */
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 15px;
+}
+
+/* Header */
+
+th {
+    color: #c4b5fd;
+    padding: 15px;
+    text-align: left;
+}
+
+/* Rows */
+
+tbody tr {
+    background: rgba(255,255,255,0.12);
+    border-radius: 20px;
+}
+
+/* Cells */
+
+td {
+    padding: 20px;
+    color: white;
+}
+
+/* Rounded Row */
+
+tbody tr td:first-child {
+    border-top-left-radius: 18px;
+    border-bottom-left-radius: 18px;
+}
+
+tbody tr td:last-child {
+    border-top-right-radius: 18px;
+    border-bottom-right-radius: 18px;
+}
+
+/* Buttons */
+
+.edit-btn {
+    background: linear-gradient(
+        135deg,
+        #3b82f6,
+        #2563eb
+    );
+
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 14px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.delete-btn {
+    background: linear-gradient(
+        135deg,
+        #ff4d4d,
+        #ff2d2d
+    );
+
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 14px;
+    cursor: pointer;
+}
+
+/* Hover */
+
+tbody tr:hover {
+    transform: scale(1.01);
+    transition: 0.3s;
+}

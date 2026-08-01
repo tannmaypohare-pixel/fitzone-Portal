@@ -1,0 +1,575 @@
+.member-card {
+
+    width:340px;
+    padding:25px;
+
+    border-radius:22px;
+
+    background:
+    linear-gradient(135deg,#171124,#2b124f);
+
+    color:white;
+
+    box-shadow:
+    0 0 25px rgba(128,0,255,0.4);
+
+    position:relative;
+
+    overflow:hidden;
+
+    transition:0.4s ease;
+
+    animation:cardEnter 0.6s ease;
+
+}
+
+
+/* MEMBERSHIP PROGRESS */
+
+.progress-section {
+
+    margin-top:25px;
+
+    background:rgba(255,255,255,0.08);
+
+    padding:15px;
+
+    border-radius:15px;
+
+}
+
+
+.progress-title {
+
+    display:flex;
+
+    justify-content:space-between;
+
+    color:#ddd6fe;
+
+    font-size:14px;
+
+    margin-bottom:10px;
+
+}
+
+
+.progress-bar {
+
+    width:100%;
+
+    height:12px;
+
+    background:rgba(255,255,255,0.15);
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+}
+
+
+.progress-fill {
+
+    height:100%;
+
+    border-radius:20px;
+
+    background:
+    linear-gradient(
+        90deg,
+        #22c55e,
+        #3b82f6,
+        #a855f7
+    );
+
+    box-shadow:
+    0 0 15px rgba(168,85,247,0.8);
+
+    transition:width 0.8s ease;
+
+}
+
+
+
+/* EXPIRY BOX */
+
+.expiry-box {
+
+    margin-top:20px;
+
+    padding:15px;
+
+    text-align:center;
+
+    border-radius:15px;
+
+    background:rgba(255,255,255,0.08);
+
+}
+
+
+.expiry-box p {
+
+    margin:0;
+
+    color:#c4b5fd;
+
+    font-size:14px;
+
+}
+
+
+.expiry-box strong {
+
+    display:block;
+
+    margin-top:8px;
+
+    font-size:18px;
+
+}
+
+
+
+
+.member-card::before {
+
+    content:"";
+
+    position:absolute;
+
+    width:180px;
+
+    height:180px;
+
+    background:#8b5cf6;
+
+    filter:blur(80px);
+
+    top:-50px;
+
+    right:-50px;
+
+}
+
+
+
+
+.member-card:hover {
+
+    transform:
+    translateY(-12px)
+    scale(1.03);
+
+    box-shadow:
+    0 0 35px rgba(168,85,247,0.8);
+
+}
+
+
+
+
+.card-header {
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    position:relative;
+
+    z-index:1;
+
+}
+
+
+
+
+.profile-circle {
+
+    height:65px;
+
+    width:65px;
+
+    border-radius:50%;
+
+    background:
+    linear-gradient(135deg,#9333ea,#2563eb);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:28px;
+
+    font-weight:bold;
+
+    box-shadow:
+    0 0 20px rgba(147,51,234,0.8);
+
+}
+
+
+
+
+
+.card-header h2 {
+
+    margin:0;
+
+    font-size:24px;
+
+}
+
+
+
+
+.plan {
+
+    display:inline-block;
+
+    margin-top:5px;
+
+    padding:6px 15px;
+
+    border-radius:20px;
+
+    background:rgba(255,255,255,0.15);
+
+    font-size:13px;
+
+}
+
+
+
+
+
+.member-details {
+
+    margin-top:25px;
+
+    background:rgba(255,255,255,0.08);
+
+    padding:15px;
+
+    border-radius:15px;
+
+}
+
+
+
+
+.member-details div {
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin-bottom:12px;
+
+}
+
+
+
+.member-details p {
+
+    color:#c4b5fd;
+
+    margin:0;
+
+}
+
+
+
+
+.status-section {
+
+    margin-top:20px;
+
+    text-align:center;
+
+}
+
+
+
+
+.status {
+
+    padding:8px 25px;
+
+    border-radius:25px;
+
+    font-weight:bold;
+
+}
+
+
+
+
+.green {
+
+    background:#22c55e;
+
+    box-shadow:
+    0 0 15px #22c55e;
+
+}
+
+
+
+
+.red {
+
+    background:#ef4444;
+
+    box-shadow:
+    0 0 15px #ef4444;
+
+}
+
+
+
+
+.expired {
+
+    box-shadow:
+    0 0 25px rgba(239,68,68,0.6);
+
+}
+
+
+
+
+@keyframes cardEnter {
+
+    from {
+
+        opacity:0;
+
+        transform:translateY(30px);
+
+    }
+
+
+    to {
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+
+
+
+
+/* ACTION BUTTONS */
+
+.card-actions {
+
+    margin-top:20px;
+
+    display:flex;
+
+    gap:10px;
+
+    flex-wrap:wrap;
+
+}
+
+
+
+.edit-btn,
+.delete-btn {
+
+    flex:1;
+
+    padding:10px;
+
+    border:none;
+
+    border-radius:12px;
+
+    color:white;
+
+    cursor:pointer;
+
+    font-weight:600;
+
+    transition:0.3s ease;
+
+}
+
+
+
+.edit-btn {
+
+    background:#2563eb;
+
+}
+
+
+
+.delete-btn {
+
+    background:#ef4444;
+
+}
+
+
+
+/* STATIC BUTTONS */
+
+.edit-btn:hover,
+.delete-btn:hover {
+
+    opacity:0.85;
+
+}
+
+
+
+.edit-btn:active,
+.delete-btn:active {
+
+    transform:scale(0.96);
+
+}
+
+
+
+/* RENEW MEMBERSHIP BUTTON */
+
+.renew-btn {
+
+    width:100%;
+
+    padding:14px;
+
+    border:none;
+
+    border-radius:15px;
+
+    cursor:pointer;
+
+    color:white;
+
+    font-size:17px;
+
+    font-weight:700;
+
+
+    background:
+    linear-gradient(
+        135deg,
+        #a855f7,
+        #2563eb,
+        #9333ea
+    );
+
+
+    position:relative;
+
+    overflow:hidden;
+
+
+    box-shadow:
+    0 0 20px rgba(168,85,247,0.5);
+
+
+    transition:0.4s ease;
+
+}
+
+
+
+
+
+/* SUNLIGHT SHINE */
+
+.renew-btn::before {
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+
+    left:-100%;
+
+    width:60%;
+
+    height:100%;
+
+
+    background:
+    linear-gradient(
+        120deg,
+        transparent,
+        rgba(255,255,255,0.6),
+        transparent
+    );
+
+
+    transform:skewX(-25deg);
+
+    animation:shine 3s infinite;
+
+}
+
+
+
+
+
+.renew-btn:hover {
+
+    transform:
+    translateY(-4px);
+
+    box-shadow:
+    0 12px 35px rgba(168,85,247,0.65);
+
+}
+
+
+
+
+.renew-btn:active {
+
+    transform:
+    scale(0.96);
+
+}
+
+
+
+
+@keyframes shine {
+
+    0% {
+
+        left:-100%;
+
+    }
+
+
+    50% {
+
+        left:130%;
+
+    }
+
+
+    100% {
+
+        left:130%;
+
+    }
+
+}

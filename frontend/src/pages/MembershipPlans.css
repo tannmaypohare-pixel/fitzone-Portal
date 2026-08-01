@@ -1,0 +1,569 @@
+.plans-container {
+
+    padding: 30px;
+    color: white;
+
+}
+
+
+
+.plans-header {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 35px;
+
+}
+
+
+
+/* Heading */
+
+.plans-heading-wrap {
+
+    animation: fadeSlideIn 0.6s ease-out;
+
+}
+
+
+
+.plans-badge {
+
+    display: inline-block;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    letter-spacing: 2px;
+
+    color: #c77dff;
+
+    background: rgba(142, 45, 226, 0.15);
+
+    border: 1px solid rgba(157, 78, 221, 0.4);
+
+    padding: 4px 12px;
+
+    border-radius: 20px;
+
+    margin-bottom: 10px;
+
+}
+
+
+
+.plans-title {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    font-size: 34px;
+
+    font-weight: 800;
+
+    margin: 4px 0;
+
+}
+
+
+
+.plans-title-icon {
+
+    display: inline-block;
+
+    filter: drop-shadow(0 0 10px rgba(142, 45, 226, 0.6));
+
+    animation: bounce 2.2s ease-in-out infinite;
+
+}
+
+
+
+.plans-title-text {
+
+    background: linear-gradient(
+        90deg,
+        #c77dff,
+        #8e2de2,
+        #4a00e0,
+        #c77dff
+    );
+
+    background-size: 300% auto;
+
+    -webkit-background-clip: text;
+
+    background-clip: text;
+
+    -webkit-text-fill-color: transparent;
+
+    animation: shimmer 5s linear infinite;
+
+}
+
+
+
+.plans-subtitle {
+
+    font-size: 14px;
+
+    color: #999;
+
+    margin: 6px 0 12px 0;
+
+}
+
+
+
+.plans-underline {
+
+    display: block;
+
+    width: 60px;
+
+    height: 4px;
+
+    border-radius: 4px;
+
+    background: linear-gradient(135deg, #8e2de2, #4a00e0);
+
+    box-shadow: 0 0 12px rgba(142, 45, 226, 0.6);
+
+    animation: growWidth 0.8s ease-out;
+
+}
+
+
+
+/* Add Button */
+
+.add-plan-btn {
+
+    background: linear-gradient(
+        135deg,
+        #8e2de2,
+        #4a00e0
+    );
+
+    color: white;
+
+    border: none;
+
+    padding: 12px 25px;
+
+    border-radius: 12px;
+
+    font-size: 16px;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+
+}
+
+
+
+.add-plan-btn:hover {
+
+    transform: translateY(-3px);
+
+    box-shadow:
+    0 0 20px rgba(142,45,226,0.6);
+
+}
+
+
+
+
+
+/* Form */
+
+.plan-form {
+
+    background: #161616;
+
+    padding: 30px;
+
+    border-radius: 20px;
+
+    width: 400px;
+
+    margin-bottom: 40px;
+
+    box-shadow:
+    0 0 25px rgba(128,0,255,0.25);
+
+    animation: fadeSlideIn 0.35s ease-out;
+
+}
+
+
+
+.plan-form h2 {
+
+    margin-bottom: 20px;
+
+    color: #c77dff;
+
+}
+
+
+
+.plan-form input,
+.plan-form select {
+
+    width: 100%;
+
+    padding: 12px;
+
+    margin-bottom: 15px;
+
+    background: #222;
+
+    border: 1px solid #444;
+
+    color: white;
+
+    border-radius: 10px;
+
+    outline: none;
+
+    transition: 0.25s;
+
+}
+
+
+
+.plan-form input:focus,
+.plan-form select:focus {
+
+    border-color: #9d4edd;
+
+    box-shadow: 0 0 10px rgba(157,78,221,0.35);
+
+}
+
+
+
+
+
+.plan-form button {
+
+    padding: 12px 20px;
+
+    margin-right: 10px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    background: #8e2de2;
+
+    color:white;
+
+    transition:0.3s;
+
+}
+
+
+
+.plan-form button:hover {
+
+    transform: scale(1.05);
+
+}
+
+
+
+
+
+/* Plans Grid */
+
+.plans-grid {
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(280px,1fr));
+
+    gap:30px;
+
+}
+
+
+
+
+
+/* Plan Cards */
+
+.plan-card {
+
+    background:
+    linear-gradient(
+        145deg,
+        #1d1d1d,
+        #111
+    );
+
+    padding:30px;
+
+    border-radius:25px;
+
+    position:relative;
+
+    overflow:hidden;
+
+    transition:0.3s;
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    animation: fadeSlideIn 0.5s ease-out;
+
+}
+
+
+
+.plan-card:hover {
+
+    transform:translateY(-10px);
+
+    box-shadow:
+    0 0 30px rgba(142,45,226,0.35);
+
+}
+
+
+
+.plan-card h2 {
+
+    color:#c77dff;
+
+    font-size:26px;
+
+}
+
+
+
+.plan-card h3 {
+
+    font-size:36px;
+
+    margin:15px 0;
+
+}
+
+
+
+.plan-card p {
+
+    color:#bbb;
+
+    margin:10px 0;
+
+}
+
+
+
+
+
+/* Status */
+
+.plan-card span {
+
+    display:inline-block;
+
+    margin-top:20px;
+
+    padding:8px 18px;
+
+    border-radius:20px;
+
+    background:#2ecc71;
+
+    font-size:14px;
+
+}
+
+
+
+/* Animations */
+
+@keyframes fadeSlideIn {
+
+    from { opacity: 0; transform: translateY(-10px); }
+
+    to { opacity: 1; transform: translateY(0); }
+
+}
+
+
+
+@keyframes bounce {
+
+    0%, 100% { transform: translateY(0); }
+
+    50% { transform: translateY(-6px); }
+
+}
+
+
+
+@keyframes shimmer {
+
+    to { background-position: 300% center; }
+
+}
+
+
+
+@keyframes growWidth {
+
+    from { width: 0; }
+
+    to { width: 60px; }
+
+}
+/* Edit Button */
+
+/* Edit Button */
+
+.edit-plan-btn {
+
+    flex: 1;
+
+    padding: 12px 15px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: linear-gradient(
+        135deg,
+        #7c3aed,
+        #a855f7
+    );
+
+    color: white;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.3s ease;
+
+}
+
+
+.edit-plan-btn:hover {
+
+    transform: translateY(-3px);
+
+    box-shadow: 
+    0 8px 20px rgba(168,85,247,0.4);
+
+}
+
+
+
+.edit-plan-btn:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 8px 20px rgba(168,85,247,0.4);
+
+}
+/* Select Plan Button */
+
+.select-plan-btn {
+
+    margin-top: 20px;
+
+    width: 100%;
+
+    padding: 12px 20px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: linear-gradient(135deg, #7b2cff, #b026ff);
+
+    color: white;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.3s ease;
+
+}
+
+
+
+.select-plan-btn:hover {
+
+    transform: translateY(-3px);
+
+    box-shadow: 0 8px 20px rgba(123, 44, 255, 0.4);
+
+}
+.plan-buttons{
+
+    display:flex;
+    gap:10px;
+    margin-top:20px;
+
+}
+
+
+.plan-buttons button{
+
+    flex:1;
+    margin-top:0;
+
+}
+
+
+
+.delete-plan-btn{
+
+    padding:12px 15px;
+
+    border:none;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    background:#ff4d4d;
+
+    color:white;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    transition:0.3s ease;
+
+}
+
+
+
+.delete-plan-btn:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 8px 20px rgba(255,77,77,0.4);
+
+}

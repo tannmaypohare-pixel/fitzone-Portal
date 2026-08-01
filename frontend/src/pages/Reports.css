@@ -1,0 +1,119 @@
+.reports-page{
+    padding:30px;
+    color:white;
+}
+
+
+.reports-title{
+    font-size:32px;
+    margin-bottom:30px;
+}
+
+
+.report-cards{
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:25px;
+
+}
+
+
+.report-card{
+
+    background:#1b1230;
+    padding:25px;
+    border-radius:20px;
+    border:1px solid #7c3aed;
+
+}
+
+
+.report-card h3{
+
+    color:#c4b5fd;
+
+}
+
+
+.report-card h2{
+
+    font-size:35px;
+    margin-top:15px;
+    color:#a855f7;
+
+}
+
+
+
+.report-sections{
+
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:25px;
+    margin-top:30px;
+
+}
+
+
+.report-box{
+
+    background:#1b1230;
+    padding:25px;
+    border-radius:20px;
+    border:1px solid #7c3aed;
+
+}
+
+
+.report-box h2{
+
+    color:#d8b4fe;
+
+}
+
+
+
+.expiry{
+
+    margin-top:30px;
+
+}
+
+
+
+table{
+
+    width:100%;
+    margin-top:20px;
+    border-collapse:collapse;
+
+}
+
+
+th,td{
+
+    padding:15px;
+    text-align:left;
+    border-bottom:1px solid #333;
+
+}
+
+
+th{
+
+    color:#c084fc;
+
+}
+
+
+
+@media(max-width:900px){
+
+    .report-sections{
+
+        grid-template-columns:1fr;
+
+    }
+
+}

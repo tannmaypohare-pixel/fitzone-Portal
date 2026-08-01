@@ -1,0 +1,457 @@
+.table-container {
+
+    width:100%;
+
+    max-width:1400px;
+
+    margin:30px auto;
+
+    padding:25px;
+
+    border-radius:22px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #111827,
+        #1e1b4b
+    );
+
+    box-shadow:
+    0 15px 40px rgba(0,0,0,0.35);
+
+    overflow-x:hidden;
+
+    animation:tableEnter .7s ease;
+
+}
+
+
+/* TABLE */
+
+.members-table {
+
+    width:100%;
+
+    border-collapse:separate;
+
+    border-spacing:0 12px;
+
+    background:transparent;
+
+}
+
+
+
+/* HEADER */
+
+.members-table th {
+
+    padding:16px;
+
+    text-align:left;
+
+    color:#c4b5fd;
+
+    font-size:15px;
+
+    letter-spacing:.5px;
+
+}
+
+
+
+/* ROW */
+
+.members-table tbody tr {
+
+    background:
+    rgba(255,255,255,0.08);
+
+    border-radius:15px;
+
+    transition:.35s ease;
+
+    animation:rowSlide .5s ease;
+
+}
+
+
+
+.members-table tbody tr:hover {
+
+    transform:
+    translateY(-5px)
+    scale(1.01);
+
+    background:
+    rgba(139,92,246,.18);
+
+    box-shadow:
+    0 0 20px rgba(139,92,246,.5);
+
+}
+
+
+
+/* CELLS */
+
+.members-table td {
+
+    padding:16px;
+
+    color:white;
+
+    background:
+    rgba(255,255,255,0.08);
+
+    border-top:
+    1px solid rgba(255,255,255,.1);
+
+    border-bottom:
+    1px solid rgba(255,255,255,.1);
+
+}
+
+
+
+.members-table td:first-child {
+
+    border-left:
+    1px solid rgba(255,255,255,.1);
+
+    border-radius:15px 0 0 15px;
+
+}
+
+
+
+.members-table td:last-child {
+
+    border-right:
+    1px solid rgba(255,255,255,.1);
+
+    border-radius:0 15px 15px 0;
+
+}
+
+
+
+/* ACTION BUTTONS */
+
+.table-actions {
+
+    display:flex;
+
+    gap:10px;
+
+    align-items:center;
+
+}
+
+
+
+.edit-btn,
+.delete-btn {
+
+    padding:8px 16px;
+
+    border:none;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    color:white;
+
+    font-weight:600;
+
+    transition:0.3s ease;
+
+    white-space:nowrap;
+
+}
+
+
+
+.edit-btn {
+
+    background:
+    linear-gradient(
+        135deg,
+        #2563eb,
+        #3b82f6
+    );
+
+}
+
+
+
+.delete-btn {
+
+    background:
+    linear-gradient(
+        135deg,
+        #dc2626,
+        #ef4444
+    );
+
+}
+
+
+
+/* STATIC BUTTON HOVER */
+
+.edit-btn:hover,
+.delete-btn:hover {
+
+    opacity:0.85;
+
+}
+
+
+
+.edit-btn:active,
+.delete-btn:active {
+
+    transform:scale(0.96);
+
+}
+
+
+
+/* STATUS */
+
+.status-active {
+
+    background:#22c55e;
+
+    color:white;
+
+    padding:6px 14px;
+
+    border-radius:20px;
+
+    font-weight:bold;
+
+}
+
+
+
+.status-expired {
+
+    background:#ef4444;
+
+    color:white;
+
+    padding:6px 14px;
+
+    border-radius:20px;
+
+    font-weight:bold;
+
+}
+
+
+
+/* ANIMATIONS */
+
+@keyframes tableEnter {
+
+    from {
+
+        opacity:0;
+
+        transform:
+        translateY(30px);
+
+    }
+
+
+    to {
+
+        opacity:1;
+
+        transform:
+        translateY(0);
+
+    }
+
+}
+
+
+
+@keyframes rowSlide {
+
+    from {
+
+        opacity:0;
+
+        transform:
+        translateX(-20px);
+
+    }
+
+
+    to {
+
+        opacity:1;
+
+        transform:
+        translateX(0);
+
+    }
+
+}
+/* MEMBERS TABLE ACTION BUTTONS */
+
+.members-table td:last-child {
+
+    min-width:180px;
+
+}
+
+
+.members-table td:last-child button {
+
+    width:75px;
+
+    height:38px;
+
+    margin-right:10px;
+
+    padding:0;
+
+    border:none;
+
+    border-radius:12px;
+
+    color:white;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    display:inline-flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+
+
+.members-table td:last-child .edit-btn {
+
+    background:
+    linear-gradient(
+        135deg,
+        #2563eb,
+        #3b82f6
+    );
+
+}
+
+
+
+.members-table td:last-child .delete-btn {
+
+    background:
+    linear-gradient(
+        135deg,
+        #dc2626,
+        #ef4444
+    );
+
+}
+/* ACTION COLUMN FIX */
+
+.members-table td:last-child {
+
+    min-width:200px;
+
+}
+
+
+
+.members-table td:last-child .edit-btn,
+.members-table td:last-child .delete-btn {
+
+    width:80px;
+
+    height:38px;
+
+    margin-right:12px;
+
+    padding:0;
+
+    display:inline-flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    border-radius:12px;
+
+    font-size:14px;
+
+}
+.table-actions {
+
+    display:flex;
+
+    gap:12px;
+
+    align-items:center;
+
+}
+
+
+
+.table-actions .edit-btn,
+.table-actions .delete-btn {
+
+    width:80px;
+
+    height:38px;
+
+    padding:0;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+/* FIT TABLE INSIDE SCREEN */
+
+.members-table th,
+.members-table td {
+
+    padding:10px;
+
+    font-size:14px;
+
+}
+
+
+.members-table td:nth-child(3){
+
+    max-width:150px;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+    white-space:nowrap;
+
+}
+
+
+.members-table td:last-child{
+
+    min-width:170px;
+
+}
