@@ -1,0 +1,179 @@
+.notfound-container {
+    position: relative;
+    min-height: 100vh;
+    background: #0b1020;
+    color: white;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+    padding: 24px;
+}
+
+/* faint grid, like a tracking display */
+.notfound-container::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(to right, rgba(139, 92, 246, 0.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(139, 92, 246, 0.06) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse at center, black 0%, transparent 72%);
+    pointer-events: none;
+}
+
+/* radar sweep, the signature element */
+.notfound-radar {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 620px;
+    height: 620px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.notfound-radar::before,
+.notfound-radar::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 1px solid rgba(139, 92, 246, 0.14);
+}
+
+.notfound-radar::after {
+    inset: 90px;
+}
+
+.notfound-sweep {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, rgba(139, 92, 246, 0.28), transparent 28%);
+    animation: sweep 5s linear infinite;
+}
+
+@keyframes sweep {
+    to { transform: rotate(360deg); }
+}
+
+.notfound-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.notfound-eyebrow {
+    font-family: ui-monospace, "SFMono-Regular", "JetBrains Mono", Menlo, Consolas, monospace;
+    font-size: 12px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: #8b5cf6;
+    margin-bottom: 18px;
+}
+
+.notfound-eyebrow::before {
+    content: "● ";
+    color: #ef4444;
+    animation: blink 1.6s step-start infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0.25; }
+}
+
+.notfound-container h1 {
+    font-size: 140px;
+    line-height: 1;
+    margin: 0;
+    color: #8b5cf6;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    text-shadow: 0 0 60px rgba(139, 92, 246, 0.45);
+    animation: pulse 3.2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { text-shadow: 0 0 60px rgba(139, 92, 246, 0.45); }
+    50% { text-shadow: 0 0 90px rgba(139, 92, 246, 0.75); }
+}
+
+.notfound-container h2 {
+    font-size: 30px;
+    margin: 14px 0 8px;
+    font-weight: 700;
+}
+
+.notfound-container p {
+    color: #b7bfd5;
+    font-size: 17px;
+    max-width: 420px;
+    margin: 0 0 28px;
+    line-height: 1.55;
+}
+
+.notfound-coords {
+    font-family: ui-monospace, "SFMono-Regular", "JetBrains Mono", Menlo, Consolas, monospace;
+    font-size: 12px;
+    color: #6b7398;
+    letter-spacing: 0.04em;
+    margin-bottom: 34px;
+}
+
+.notfound-coords span {
+    color: #8b5cf6;
+}
+
+.back-btn {
+    text-decoration: none;
+    background: #8b5cf6;
+    color: white;
+
+    padding: 14px 30px;
+    border-radius: 12px;
+
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.back-btn:hover {
+    transform: translateY(-3px);
+    background: #7c3aed;
+}
+
+.back-btn:focus-visible {
+    outline: 2px solid #c4b5fd;
+    outline-offset: 3px;
+}
+
+@media (max-width: 480px) {
+    .notfound-container h1 {
+        font-size: 88px;
+    }
+
+    .notfound-container h2 {
+        font-size: 22px;
+    }
+
+    .notfound-radar {
+        width: 420px;
+        height: 420px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .notfound-sweep,
+    .notfound-container h1,
+    .notfound-eyebrow::before {
+        animation: none;
+    }
+}

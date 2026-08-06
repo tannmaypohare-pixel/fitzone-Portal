@@ -9,12 +9,22 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Trainers from "./pages/Trainers";
 import MembershipPlans from "./pages/MembershipPlans";
+import MemberPlans from "./pages/MemberPlans";
 import Payments from "./pages/Payments";
 import Unauthorized from "./pages/Unauthorized";
 
 import MemberDashboard from "./pages/MemberDashboard";
-import ProtectedRoute from "./components/ProtectedRoute";
+import MemberTrainer from "./pages/MemberTrainer";
+import Profile from "./pages/Profile";
+
 import Reports from "./pages/Reports";
+import NotFound from "./pages/NotFound";
+
+import ProtectedRoute from "./components/ProtectedRoute";
+
+import MainLayout from "./layouts/MainLayout";
+import AdminLayout from "./layouts/AdminLayout";
+import MemberLayout from "./layouts/MemberLayout";
 
 
 function App() {
@@ -26,129 +36,158 @@ function App() {
 
       {/* PUBLIC ROUTES */}
 
-      <Route path="/" element={<Login />} />
+      <Route element={<MainLayout />}>
 
-      <Route 
-        path="/register" 
-        element={<Register />} 
-      />
+        <Route 
+          path="/" 
+          element={<Login />} 
+        />
 
-      <Route
-        path="/forgot-password"
-        element={<ForgotPassword />}
-      />
+        <Route 
+          path="/register" 
+          element={<Register />} 
+        />
 
-      <Route
-        path="/reset-password/:token"
-        element={<ResetPassword />}
-      />
+        <Route
+          path="/forgot-password"
+          element={<ForgotPassword />}
+        />
 
-      <Route
-        path="/unauthorized"
-        element={<Unauthorized />}
-      />
+        <Route
+          path="/reset-password/:token"
+          element={<ResetPassword />}
+        />
+
+        <Route
+          path="/unauthorized"
+          element={<Unauthorized />}
+        />
+
+      </Route>
+
+
 
 
 
       {/* ADMIN ROUTES */}
 
-
       <Route
-        path="/dashboard"
+
         element={
           <ProtectedRoute allowedRoles={["ADMIN"]}>
-            <Dashboard />
+            <AdminLayout />
           </ProtectedRoute>
         }
-      />
+
+      >
+
+        <Route
+          path="/dashboard"
+          element={<Dashboard />}
+        />
 
 
-      <Route
-        path="/members"
-        element={
-          <ProtectedRoute allowedRoles={["ADMIN"]}>
-            <Members />
-          </ProtectedRoute>
-        }
-      />
+        <Route
+          path="/members"
+          element={<Members />}
+        />
 
 
-      <Route
-        path="/add-member"
-        element={
-          <ProtectedRoute allowedRoles={["ADMIN"]}>
-            <AddMember />
-          </ProtectedRoute>
-        }
-      />
+        <Route
+          path="/add-member"
+          element={<AddMember />}
+        />
 
 
-      <Route
-        path="/trainers"
-        element={
-          <ProtectedRoute allowedRoles={["ADMIN"]}>
-            <Trainers />
-          </ProtectedRoute>
-        }
-      />
+        <Route
+          path="/trainers"
+          element={<Trainers />}
+        />
 
 
-      <Route
-        path="/reports"
-        element={
-          <ProtectedRoute allowedRoles={["ADMIN"]}>
-            <Reports />
-          </ProtectedRoute>
-        }
-      />
+        {/* ADMIN PLAN MANAGEMENT */}
+
+        <Route
+          path="/membership"
+          element={<MembershipPlans />}
+        />
 
 
-      {/* ADMIN MEMBERSHIP PLANS */}
+        <Route
+          path="/payments"
+          element={<Payments />}
+        />
 
-      <Route
-        path="/membership"
-        element={
-          <ProtectedRoute allowedRoles={["ADMIN"]}>
-            <MembershipPlans />
-          </ProtectedRoute>
-        }
-      />
+
+        <Route
+          path="/reports"
+          element={<Reports />}
+        />
+
+      </Route>
 
 
 
-      {/* ADMIN + MEMBER PAYMENTS */}
 
-      <Route
-        path="/payments"
-        element={
-          <ProtectedRoute allowedRoles={["ADMIN", "MEMBER"]}>
-            <Payments />
-          </ProtectedRoute>
-        }
-      />
 
 
 
       {/* MEMBER ROUTES */}
 
-
       <Route
-        path="/membership-plans"
+
         element={
           <ProtectedRoute allowedRoles={["MEMBER"]}>
-            <MembershipPlans />
+            <MemberLayout />
           </ProtectedRoute>
         }
-      />
 
+      >
+
+        <Route
+          path="/member-dashboard"
+          element={<MemberDashboard />}
+        />
+
+
+        <Route
+          path="/member-trainer"
+          element={<MemberTrainer />}
+        />
+
+
+        {/* MEMBER PLAN VIEW */}
+
+        <Route
+          path="/membership-plans"
+          element={<MemberPlans />}
+        />
+
+
+        <Route
+          path="/my-payments"
+          element={<Payments />}
+        />
+
+
+        <Route
+          path="/profile"
+          element={<Profile />}
+        />
+
+      </Route>
+
+
+
+
+
+
+
+      {/* NOT FOUND */}
 
       <Route
-        path="/member-dashboard"
-        element={
-          <ProtectedRoute allowedRoles={["MEMBER"]}>
-            <MemberDashboard />
-          </ProtectedRoute>
-        }
+        path="*"
+        element={<NotFound />}
       />
 
 

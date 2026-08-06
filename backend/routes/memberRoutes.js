@@ -3,16 +3,28 @@ const router = express.Router();
 
 const authMiddleware = require("../middleware/authMiddleware");
 
+
+console.log("✅ memberRoutes loaded");
+
+
+
 const {
+
     getMembers,
     addMember,
     deleteMember,
     updateMember,
-    getDashboardStats
+    getDashboardStats,
+    assignTrainer,
+    getMemberTrainer,
+    getMemberProfile
+
 } = require("../controllers/memberControllers");
 
 
-// GET DASHBOARD STATS
+
+
+// DASHBOARD STATS
 router.get(
     "/stats",
     authMiddleware,
@@ -20,7 +32,19 @@ router.get(
 );
 
 
-// MEMBER CRUD ROUTES
+
+
+// GET LOGGED IN MEMBER PROFILE
+router.get(
+    "/profile",
+    authMiddleware,
+    getMemberProfile
+);
+
+
+
+
+// GET ALL MEMBERS
 router.get(
     "/",
     authMiddleware,
@@ -28,6 +52,9 @@ router.get(
 );
 
 
+
+
+// ADD MEMBER
 router.post(
     "/",
     authMiddleware,
@@ -35,6 +62,9 @@ router.post(
 );
 
 
+
+
+// UPDATE MEMBER
 router.put(
     "/:id",
     authMiddleware,
@@ -42,11 +72,35 @@ router.put(
 );
 
 
+
+
+// DELETE MEMBER
 router.delete(
     "/:id",
     authMiddleware,
     deleteMember
 );
+
+
+
+
+// ASSIGN TRAINER
+router.put(
+    "/:id/trainer",
+    authMiddleware,
+    assignTrainer
+);
+
+
+
+
+// GET MEMBER TRAINER
+router.get(
+    "/:id/trainer",
+    authMiddleware,
+    getMemberTrainer
+);
+
 
 
 module.exports = router;

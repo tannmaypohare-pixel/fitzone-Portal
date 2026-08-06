@@ -17,6 +17,9 @@ function Login() {
     const [error, setError] = useState("");
 
 
+    console.log(import.meta.env.VITE_GOOGLE_CLIENT_ID);
+
+
 
     const handleLogin = async (e) => {
 
@@ -39,12 +42,17 @@ function Login() {
             const { token, user } = response.data;
 
 
-            localStorage.setItem("token", token);
+            localStorage.setItem(
+                "token",
+                token
+            );
+
 
             localStorage.setItem(
                 "user",
                 JSON.stringify(user)
             );
+
 
             localStorage.setItem(
                 "isLoggedIn",
@@ -63,7 +71,6 @@ function Login() {
                 navigate("/member-dashboard");
 
             }
-
 
 
         } catch(error) {
@@ -85,19 +92,23 @@ function Login() {
 
 
 
+
     const handleGoogleSuccess = async (credentialResponse) => {
 
         try {
 
+
             const response = await axios.post(
                 "http://localhost:5001/api/auth/google-login",
                 {
-                    token: credentialResponse.credential
+                    credential: credentialResponse.credential
                 }
             );
 
 
+
             const { token, user } = response.data;
+
 
 
             localStorage.setItem(
@@ -131,17 +142,32 @@ function Login() {
             }
 
 
+
         } catch(error) {
 
-            console.log(error);
 
-            setError("Google login failed");
+            console.log(
+                "FULL GOOGLE ERROR:",
+                error
+            );
+
+
+            console.log(
+                "RESPONSE:",
+                error.response?.data
+            );
+
+
+            setError(
+                error.response?.data?.message ||
+                "Google login failed"
+            );
+
 
         }
 
+
     };
-
-
 
 
 
@@ -156,7 +182,6 @@ function Login() {
                 <div className="login-glow login-glow-1"></div>
 
                 <div className="login-glow login-glow-2"></div>
-
 
 
                 <div className="login-card">
@@ -181,12 +206,9 @@ function Login() {
                         </p>
 
 
-
-
-                        <form onSubmit={handleLogin}>
-
-
-                            <div className="field">
+                        <form onSubmit={handleLogin}>   
+                            
+                                                     <div className="field">
 
                                 <input
                                     type="email"
@@ -332,9 +354,6 @@ function Login() {
                             />
 
 
-
-                            
-
                         </div>
 
 
@@ -394,18 +413,26 @@ function Login() {
 
                         <div className="illustration-ring"></div>
 
+
                         <svg
                             className="dumbbell-svg"
                             viewBox="0 0 200 80"
                             fill="none"
                             xmlns="http://www.w3.org/2000/svg"
                         >
+
                             <rect x="10" y="26" width="18" height="28" rx="6" fill="#a78bfa" />
+
                             <rect x="0" y="20" width="10" height="40" rx="4" fill="#8b5cf6" />
+
                             <rect x="172" y="26" width="18" height="28" rx="6" fill="#60a5fa" />
+
                             <rect x="190" y="20" width="10" height="40" rx="4" fill="#3b82f6" />
+
                             <rect x="28" y="36" width="144" height="8" rx="4" fill="#c4b5fd" />
+
                         </svg>
+
 
                     </div>
 

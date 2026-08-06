@@ -1,4 +1,3 @@
-
 const express = require("express");
 
 const router = express.Router();
@@ -7,7 +6,8 @@ const router = express.Router();
 const {
     getRevenueReport,
     getMemberGrowthReport,
-    getPlanDistributionReport
+    getPlanDistributionReport,
+    getExpiringMemberships
 } = require("../controllers/reportController");
 
 
@@ -32,6 +32,14 @@ router.get(
 router.get(
     "/plans",
     getPlanDistributionReport
+);
+
+
+
+// Expiring Memberships
+router.get(
+    "/expiring",
+    getExpiringMemberships
 );
 
 

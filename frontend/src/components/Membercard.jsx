@@ -119,7 +119,7 @@ function MemberCard({ member, onEdit, onDelete }) {
 
 
 
-                <h3>
+                <span className="days-left">
 
                     {
                         isExpired
@@ -127,7 +127,7 @@ function MemberCard({ member, onEdit, onDelete }) {
                         : `${daysRemaining} Days Left`
                     }
 
-                </h3>
+                </span>
 
 
             </div>
@@ -173,45 +173,47 @@ function MemberCard({ member, onEdit, onDelete }) {
 
                 </button>
 
-<button
-    className="renew-btn"
-    onClick={() => {
-
-        const confirmRenew = window.confirm(
-            `Renew membership for ${member.name}?`
-        );
 
 
-        if(confirmRenew){
 
-            const newExpiry = new Date(member.expiryDate);
+                <button
+                    className="renew-btn"
+                    onClick={() => {
 
-
-            newExpiry.setMonth(
-                newExpiry.getMonth() + 1
-            );
-
-
-            const formattedNewExpiry =
-                newExpiry.toISOString().split("T")[0];
+                        const confirmRenew = window.confirm(
+                            `Renew membership for ${member.name}?`
+                        );
 
 
-            onEdit({
-                ...member,
-                expiryDate: formattedNewExpiry
-            });
+                        if(confirmRenew){
 
-        }
-
-    }}
->
-
-    Renew Membership
-
-</button>
+                            const newExpiry = new Date(member.expiryDate);
 
 
-       
+                            newExpiry.setMonth(
+                                newExpiry.getMonth() + 1
+                            );
+
+
+                            const formattedNewExpiry =
+                                newExpiry.toISOString().split("T")[0];
+
+
+                            onEdit({
+                                ...member,
+                                expiryDate: formattedNewExpiry
+                            });
+
+                        }
+
+                    }}
+                >
+
+                    Renew Membership
+
+                </button>
+
+
             </div>
 
 

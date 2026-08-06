@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./MemberDashboard.css";
+import MemberTrainers from "../components/MemberTrainers";
 
 
 function MemberDashboard() {
@@ -8,7 +10,16 @@ function MemberDashboard() {
 
     const navigate = useNavigate();
 
+
     const [user, setUser] = useState(null);
+
+    const [member, setMember] = useState(null);
+
+    const [payment, setPayment] = useState(null);
+
+    const [loading, setLoading] = useState(true);
+
+
 
 
 
@@ -17,12 +28,86 @@ function MemberDashboard() {
 
         const storedUser = localStorage.getItem("user");
 
+        const token = localStorage.getItem("token");
 
-        if (storedUser) {
+
+
+        if(storedUser){
 
             setUser(JSON.parse(storedUser));
 
         }
+
+
+
+
+
+        const fetchMember = async()=>{
+
+
+            try{
+
+
+                const response = await axios.get(
+
+                    "http://localhost:5001/api/members/profile",
+
+                    {
+                        headers:{
+                            Authorization:`Bearer ${token}`
+                        }
+                    }
+
+                );
+
+
+
+                console.log(
+                    "LOGGED MEMBER DATA:",
+                    response.data
+                );
+
+
+
+                setMember(response.data.member);
+
+                setPayment(response.data.payment);
+
+
+
+            }
+            catch(error){
+
+                console.log(
+                    "STATUS:",
+                    error.response?.status
+                );
+
+
+                console.log(
+                    "ERROR DATA:",
+                    JSON.stringify(
+                        error.response?.data,
+                        null,
+                        2
+                    )
+                );
+
+            }
+
+            finally{
+
+                setLoading(false);
+
+            }
+
+
+        };
+
+
+
+        fetchMember();
+
 
 
     }, []);
@@ -31,8 +116,11 @@ function MemberDashboard() {
 
 
 
-    const logout = () => {
 
+
+
+
+    const logout = () => {
 
         localStorage.removeItem("token");
 
@@ -43,6 +131,30 @@ function MemberDashboard() {
 
         navigate("/");
 
+    };
+
+
+
+
+
+
+
+
+
+    const getGreeting = () => {
+
+        const hour = new Date().getHours();
+
+
+        if(hour < 12)
+            return "Good morning";
+
+
+        if(hour < 17)
+            return "Good afternoon";
+
+
+        return "Good evening";
 
     };
 
@@ -50,295 +162,418 @@ function MemberDashboard() {
 
 
 
-    return (
 
 
-        <div className="member-dashboard">
 
 
+    const formatMembership = (plan) => {
 
-            <header className="member-header">
+        if(!plan)
+            return "No Active Plan";
 
 
-                <div>
+        if(plan === "3 Month")
+            return "3 Months";
 
 
-                    <h1>
+        if(plan === "6 Month")
+            return "6 Months";
 
-                        Welcome back, {user?.name || "Member"} 👋
 
-                    </h1>
+        if(plan === "12 Month")
+            return "12 Months";
 
 
-                    <p>
+        return plan;
 
-                        Your FitZone fitness journey
+    };
 
-                    </p>
 
 
-                </div>
 
 
 
 
-                <button onClick={logout}>
 
-                    Logout
 
-                </button>
+    const getDaysLeft = ()=>{
 
 
+        if(!member?.expiryDate)
 
-            </header>
+            return 0;
 
 
 
+        const today = new Date();
 
+        const expiry = new Date(member.expiryDate);
 
-            <section className="member-profile">
 
+        const diff = expiry - today;
 
 
-                <div className="profile-avatar">
 
-                    💪
+        return Math.ceil(
 
-                </div>
+            diff / (1000 * 60 * 60 * 24)
 
+        );
 
 
+    };
 
-                <div>
 
 
-                    <h2>
 
-                        {user?.name || "FitZone Member"}
 
-                    </h2>
 
 
-                    <span>
+    const isActive = getDaysLeft() > 0;
 
-                        {user?.email || "member@email.com"}
 
-                    </span>
 
 
-                </div>
 
 
 
+    if(loading){
 
-                <div className="active-badge">
 
-                    ACTIVE
+        return (
 
-                </div>
+            <div className="member-dashboard member-dashboard--loading">
 
+                <div className="loading-spinner"/>
 
+            </div>
 
-            </section>
+        );
 
+    }
 
 
 
 
 
 
-            <section className="member-cards">
 
+return (
 
+<div className="member-dashboard">
 
-                <div className="member-card membership-card">
 
 
-                    <h3>
 
-                        💳 Membership
 
-                    </h3>
+<header className="member-header">
 
 
+<div className="member-header__text">
 
-                    <h2>
 
-                        No Active Plan
+<span className="member-greeting">
 
-                    </h2>
+{getGreeting()}
 
+</span>
 
 
-                    <p>
 
-                        Choose a membership plan to continue
 
-                    </p>
+<h1>
 
+Welcome, {user?.name || "Member"} 👋
 
+</h1>
 
-                </div>
 
 
 
+<p>
+Manage your FitZone membership
+</p>
 
 
+</div>
 
 
-                <div className="member-card">
 
 
-                    <h3>
 
-                        📅 Attendance
+<button
 
-                    </h3>
+className="logout-btn"
 
+onClick={logout}
 
+>
 
-                    <h1>
+🚪 Logout
 
-                        0
+</button>
 
-                    </h1>
 
 
+</header>
 
-                    <p>
 
-                        Gym visits this month
 
-                    </p>
 
 
 
-                </div>
 
 
 
+<section className="member-profile">
 
 
+<div className="profile-avatar">
 
+💪
 
-                <div className="member-card">
+</div>
 
 
-                    <h3>
 
-                        💰 Payments
 
-                    </h3>
 
+<div className="profile-info">
 
 
-                    <h1>
+<h2>
 
-                        ₹0
+{user?.name || "FitZone Member"}
 
-                    </h1>
+</h2>
 
 
 
-                    <p>
 
-                        Payment history
+<span className="profile-email">
 
-                    </p>
+{user?.email || "member@email.com"}
 
+</span>
 
 
-                </div>
 
+</div>
 
 
 
-            </section>
 
 
 
+<div className="active-badge">
 
 
+<span className="active-dot"/>
 
 
+{
 
-            <section className="member-actions">
+isActive
 
+?
 
+"ACTIVE"
 
-                <button
+:
 
-                    onClick={() => navigate("/membership-plans")}
+"EXPIRED"
 
-                >
+}
 
-                    💳 Choose Membership Plan
 
-                </button>
+</div>
 
 
 
+</section>
 
 
-                <button
 
-                    onClick={() => navigate("/payments")}
 
-                >
 
-                    📄 View Payments
 
-                </button>
 
 
 
-            </section>
+<section className="member-cards">
 
 
 
 
 
+<div className="member-card">
 
 
+<div className="card-icon">
 
-            <section className="member-extra">
+📋
 
+</div>
 
 
-                <h2>
 
-                    Today's Fitness Goal 🏋
 
-                </h2>
+<h3>
+Membership
+</h3>
 
 
 
 
-                <div className="goal-box">
 
+<h2>
 
-                    <p>
+{
+formatMembership(member?.membershipType)
+}
 
-                        Complete your workout and maintain consistency.
+</h2>
 
-                    </p>
 
 
 
-                </div>
 
+<p>
 
 
-            </section>
+{
 
+isActive
 
+?
 
+`${getDaysLeft()} days remaining`
 
+:
 
-        </div>
+"No active membership"
 
+}
 
-    );
+
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div className="member-card">
+
+
+<div className="card-icon">
+
+💳
+
+</div>
+
+
+
+
+<h3>
+Payments
+</h3>
+
+
+
+
+<h2>
+
+₹{payment?.amount || 0}
+
+</h2>
+
+
+
+
+<p>
+Latest payment
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<section className="member-actions">
+
+
+<button
+
+className="action-btn action-btn--primary"
+
+onClick={()=>navigate("/membership-plans")}
+
+>
+
+📋 View Membership Plans
+
+</button>
+
+
+
+
+
+
+<button
+
+className="action-btn action-btn--secondary"
+
+onClick={()=>navigate("/payments")}
+
+>
+
+💳 View My Payments
+
+</button>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+<MemberTrainers />
+
+
+
+
+
+</div>
+
+);
 
 
 }

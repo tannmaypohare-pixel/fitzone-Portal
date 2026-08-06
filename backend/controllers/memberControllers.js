@@ -1,5 +1,7 @@
 const Member = require("../models/Member");
 const User = require("../models/User");
+const Plan = require("../models/Plan");
+const Payment = require("../models/Payment");
 const bcrypt = require("bcryptjs");
 
 
@@ -8,7 +10,11 @@ exports.getMembers = async (req, res) => {
 
     try {
 
-        const members = await Member.find();
+        const members = await Member.find()
+            .populate(
+                "trainerId",
+                "name email phone specialization experience"
+            );
 
         res.json(members);
 
@@ -21,6 +27,7 @@ exports.getMembers = async (req, res) => {
     }
 
 };
+
 
 
 
@@ -41,7 +48,6 @@ exports.addMember = async (req, res) => {
 
 
 
-        // CHECK DUPLICATE PHONE
         const existingMember = await Member.findOne({
             phone
         });
@@ -57,7 +63,6 @@ exports.addMember = async (req, res) => {
 
 
 
-        // CHECK DUPLICATE EMAIL
         const existingUser = await User.findOne({
             email
         });
@@ -73,7 +78,6 @@ exports.addMember = async (req, res) => {
 
 
 
-        // DEFAULT PASSWORD
         const defaultPassword = "FitZone@123";
 
 
@@ -84,7 +88,6 @@ exports.addMember = async (req, res) => {
 
 
 
-        // CREATE USER LOGIN
         const user = await User.create({
 
             name,
@@ -99,7 +102,8 @@ exports.addMember = async (req, res) => {
 
 
 
-        // CREATE MEMBER PROFILE
+
+
         const member = await Member.create({
 
             userId: user._id,
@@ -122,6 +126,40 @@ exports.addMember = async (req, res) => {
 
 
 
+        // CREATE PAYMENT AUTOMATICALLY
+
+        const plan = await Plan.findOne({
+
+            duration: membershipType
+
+        });
+
+
+
+        if (plan) {
+
+            await Payment.create({
+
+                memberId: member._id,
+
+                memberName: member.name,
+
+                plan: plan.duration,
+
+                amount: plan.price,
+
+                status: "Paid",
+
+                paymentMethod: "UPI"
+
+            });
+
+        }
+
+
+
+
+
         res.status(201).json({
 
             message: "Member created successfully",
@@ -138,17 +176,7 @@ exports.addMember = async (req, res) => {
 
     } catch (error) {
 
-
-        if (error.code === 11000) {
-
-            return res.status(400).json({
-
-                message: "Member already exists"
-
-            });
-
-        }
-
+        console.log(error);
 
         res.status(500).json({
 
@@ -156,10 +184,12 @@ exports.addMember = async (req, res) => {
 
         });
 
-
     }
 
 };
+
+
+
 
 
 
@@ -205,6 +235,10 @@ exports.deleteMember = async (req, res) => {
 
 
 
+
+
+
+
 // UPDATE MEMBER
 exports.updateMember = async (req, res) => {
 
@@ -218,7 +252,9 @@ exports.updateMember = async (req, res) => {
 
                 req.body,
 
-                { new: true }
+                {
+                    new:true
+                }
 
             );
 
@@ -227,12 +263,12 @@ exports.updateMember = async (req, res) => {
 
 
 
-    } catch (error) {
+    } catch(error) {
 
 
         res.status(500).json({
 
-            message: error.message
+            message:error.message
 
         });
 
@@ -243,8 +279,183 @@ exports.updateMember = async (req, res) => {
 
 
 
-// GET DASHBOARD STATS (LIVE DATA)
-exports.getDashboardStats = async (req, res) => {
+
+
+
+
+
+// ASSIGN TRAINER TO MEMBER (ADMIN)
+exports.assignTrainer = async (req,res)=>{
+
+    try {
+
+
+        const {
+            trainerId
+        } = req.body;
+
+
+
+        const trainer = await User.findOne({
+
+            _id: trainerId,
+
+            role:"TRAINER"
+
+        });
+
+
+
+        if(!trainer){
+
+            return res.status(404).json({
+
+                message:"Trainer not found"
+
+            });
+
+        }
+
+
+
+
+        const member =
+            await Member.findByIdAndUpdate(
+
+                req.params.id,
+
+                {
+                    trainerId
+                },
+
+                {
+                    new:true
+                }
+
+            )
+            .populate(
+                "trainerId",
+                "name specialization experience"
+            );
+
+
+
+
+        res.json({
+
+            message:"Trainer assigned successfully",
+
+            member
+
+        });
+
+
+
+    } catch(error){
+
+
+        res.status(500).json({
+
+            message:error.message
+
+        });
+
+
+    }
+
+};
+
+
+
+
+
+
+
+
+
+// GET MEMBER TRAINER
+exports.getMemberTrainer = async(req,res)=>{
+
+    try {
+
+
+        const member =
+            await Member.findById(
+                req.params.id
+            )
+            .populate(
+
+                "trainerId",
+
+                "name email phone specialization experience"
+
+            );
+
+
+
+
+        if(!member){
+
+            return res.status(404).json({
+
+                message:"Member not found"
+
+            });
+
+        }
+
+
+
+
+
+        if(!member.trainerId){
+
+            return res.json({
+
+                message:"No trainer assigned",
+
+                trainer:null
+
+            });
+
+        }
+
+
+
+
+
+        res.json({
+
+            trainer:member.trainerId
+
+        });
+
+
+
+    }catch(error){
+
+
+        res.status(500).json({
+
+            message:error.message
+
+        });
+
+
+    }
+
+};
+
+
+
+
+
+
+
+
+
+// GET DASHBOARD STATS
+exports.getDashboardStats = async (req,res)=>{
 
     try {
 
@@ -257,8 +468,8 @@ exports.getDashboardStats = async (req, res) => {
         const activeMembers =
             await Member.countDocuments({
 
-                status: {
-                    $regex: /^active$/i
+                status:{
+                    $regex:/^active$/i
                 }
 
             });
@@ -268,32 +479,11 @@ exports.getDashboardStats = async (req, res) => {
         const expiredPlans =
             await Member.countDocuments({
 
-                status: {
-                    $regex: /^expired$/i
+                status:{
+                    $regex:/^expired$/i
                 }
 
             });
-
-
-
-        const revenueData =
-            await Member.aggregate([
-
-                {
-                    $group: {
-                        _id: null,
-                        total: {
-                            $sum: "$price"
-                        }
-                    }
-                }
-
-            ]);
-
-
-
-        const revenue =
-            revenueData[0]?.total || 0;
 
 
 
@@ -305,7 +495,67 @@ exports.getDashboardStats = async (req, res) => {
 
             expiredPlans,
 
-            revenue
+            revenue:0
+
+        });
+
+
+
+    }catch(error){
+
+        res.status(500).json({
+
+            message:error.message
+
+        });
+
+    }
+
+};
+// GET LOGGED IN MEMBER PROFILE
+exports.getMemberProfile = async (req, res) => {
+    try {
+        let member = await Member.findOne({
+            userId: req.user.id
+        });
+
+        if (!member) {
+            const user = await User.findById(req.user.id);
+
+            if (user) {
+                member = await Member.findOne({
+                    email: user.email
+                });
+            }
+        }
+
+        if (!member) {
+            return res.status(404).json({
+                message: "Member profile not found"
+            });
+        }
+
+        // rest of the code...
+
+
+        // FIND LATEST PAYMENT
+        const payment = await Payment.findOne({
+
+            memberId: member._id
+
+        }).sort({
+
+            createdAt: -1
+
+        });
+
+
+
+        res.status(200).json({
+
+            member,
+
+            payment
 
         });
 
@@ -314,13 +564,25 @@ exports.getDashboardStats = async (req, res) => {
     } catch (error) {
 
 
+        console.log(
+            "PROFILE ERROR:",
+            error.message
+        );
+
+
         res.status(500).json({
 
             message: error.message
 
         });
 
-
     }
 
 };
+
+
+
+
+
+
+

@@ -7,15 +7,12 @@ function Payments() {
 
 
     const [payments, setPayments] = useState([]);
-
     const [revenue, setRevenue] = useState(0);
-
 
 
     const user = JSON.parse(
         localStorage.getItem("user")
     );
-
 
 
     const plan = JSON.parse(
@@ -33,7 +30,6 @@ function Payments() {
             const res = await axios.get(
                 "http://localhost:5001/api/payments"
             );
-
 
             setPayments(res.data);
 
@@ -58,7 +54,6 @@ function Payments() {
                 "http://localhost:5001/api/payments/revenue"
             );
 
-
             setRevenue(res.data.revenue);
 
 
@@ -74,14 +69,22 @@ function Payments() {
 
 
 
+
+
     useEffect(()=>{
 
 
-        if(user?.role === "ADMIN") {
+        if(user?.role === "ADMIN"){
 
             fetchPayments();
-
             fetchRevenue();
+
+        }
+
+
+        if(user?.role === "MEMBER"){
+
+            fetchPayments();
 
         }
 
@@ -102,28 +105,23 @@ function Payments() {
 
 
             await axios.delete(
-
                 `http://localhost:5001/api/payments/${id}`
-
             );
 
 
             fetchPayments();
-
             fetchRevenue();
 
 
-
-        } catch(error) {
-
+        } catch(error){
 
             console.log(error);
-
 
         }
 
 
     };
+
 
 
 
@@ -147,44 +145,27 @@ function Payments() {
 
 
 
-
-
         try {
 
 
             const paymentData = {
 
 
-                memberId: user._id,
+                memberId:user._id,
 
+                memberName:user.name,
 
-                memberName: user.name,
+                plan:
+                plan.duration || plan.name,
 
+                amount:plan.price,
 
-                // FIXED HERE
-                plan: plan.duration || plan.name,
+                paymentMethod:"UPI",
 
-
-                amount: plan.price,
-
-
-                paymentMethod: "UPI",
-
-
-                status: "Paid"
+                status:"Paid"
 
 
             };
-
-
-
-
-
-            console.log(
-                "Sending Payment:",
-                paymentData
-            );
-
 
 
 
@@ -200,12 +181,9 @@ function Payments() {
 
 
 
-
             alert(
                 "Payment successful 🎉"
             );
-
-
 
 
 
@@ -215,26 +193,15 @@ function Payments() {
 
 
 
-
-
             window.location.reload();
 
 
 
+        }
+        catch(error){
 
 
-        } catch(error) {
-
-
-            console.log(
-
-                "Payment error:",
-
-                error.response?.data || error.message
-
-            );
-
-
+            console.log(error);
 
             alert(
                 "Payment failed"
@@ -254,7 +221,7 @@ function Payments() {
 
 
 
-    // ================= ADMIN =================
+    // ================= ADMIN VIEW =================
 
 
     if(user?.role === "ADMIN"){
@@ -265,10 +232,9 @@ function Payments() {
             <div className="payments-page">
 
 
-                <h1>
+                <h1 className="animated-heading">
                     💳 Payments Management
                 </h1>
-
 
 
 
@@ -282,60 +248,49 @@ function Payments() {
                             Total Revenue
                         </h3>
 
-
                         <h2>
                             ₹{revenue}
                         </h2>
-
 
                     </div>
 
 
 
-
-
                     <div className="payment-card">
-
 
                         <h3>
                             Total Payments
                         </h3>
 
-
                         <h2>
                             {payments.length}
                         </h2>
 
-
                     </div>
-
-
 
 
 
                     <div className="payment-card">
 
-
                         <h3>
                             Paid Payments
                         </h3>
 
-
                         <h2>
 
-                            {
-                                payments.filter(
-                                    p=>p.status==="Paid"
-                                ).length
-                            }
+                        {
+                            payments.filter(
+                                p=>p.status==="Paid"
+                            ).length
+                        }
 
                         </h2>
-
 
                     </div>
 
 
                 </div>
+
 
 
 
@@ -352,34 +307,17 @@ function Payments() {
 
                             <tr>
 
-                                <th>
-                                    Member
-                                </th>
+                                <th>Member</th>
 
+                                <th>Plan</th>
 
-                                <th>
-                                    Plan
-                                </th>
+                                <th>Amount</th>
 
+                                <th>Method</th>
 
-                                <th>
-                                    Amount
-                                </th>
+                                <th>Status</th>
 
-
-                                <th>
-                                    Method
-                                </th>
-
-
-                                <th>
-                                    Status
-                                </th>
-
-
-                                <th>
-                                    Action
-                                </th>
+                                <th>Action</th>
 
 
                             </tr>
@@ -390,92 +328,72 @@ function Payments() {
 
 
 
-
                         <tbody>
 
 
                         {
 
-                            payments.map((payment)=>(
+                        payments.map((payment)=>(
 
 
-                                <tr key={payment._id}>
+                            <tr key={payment._id}>
 
 
-                                    <td>
-
-                                        {
-                                            payment.memberId?.name ||
-                                            payment.memberName
-                                        }
-
-                                    </td>
+                                <td>
+                                    {
+                                    payment.memberId?.name ||
+                                    payment.memberName
+                                    }
+                                </td>
 
 
-
-                                    <td>
-                                        {payment.plan}
-                                    </td>
-
+                                <td>
+                                    {payment.plan}
+                                </td>
 
 
-                                    <td>
-                                        ₹{payment.amount}
-                                    </td>
+                                <td>
+                                    ₹{payment.amount}
+                                </td>
 
 
-
-                                    <td>
-                                        {payment.paymentMethod}
-                                    </td>
-
+                                <td>
+                                    {payment.paymentMethod}
+                                </td>
 
 
-
-                                    <td>
-
-                                        <span className="paid">
-
-                                            {payment.status}
-
-                                        </span>
-
-                                    </td>
+                                <td>
+                                    {payment.status}
+                                </td>
 
 
+                                <td>
 
 
-                                    <td>
+                                    <button
+
+                                    className="delete-btn"
+
+                                    onClick={()=>
+                                        deletePayment(payment._id)
+                                    }
+
+                                    >
+
+                                    Delete
+
+                                    </button>
 
 
-                                        <button
-
-                                            className="delete-btn"
-
-                                            onClick={()=>
-                                                deletePayment(
-                                                    payment._id
-                                                )
-                                            }
-
-                                        >
-
-                                            Delete
-
-                                        </button>
+                                </td>
 
 
-                                    </td>
+                            </tr>
 
 
-
-                                </tr>
-
-
-                            ))
+                        ))
 
                         }
-
 
 
                         </tbody>
@@ -487,9 +405,7 @@ function Payments() {
                 </div>
 
 
-
             </div>
-
 
         );
 
@@ -504,7 +420,20 @@ function Payments() {
 
 
 
-    // ================= MEMBER =================
+    // ================= MEMBER VIEW =================
+
+
+    const myPayments = payments.filter(
+
+        payment =>
+        payment.memberId?._id === user?._id ||
+        payment.memberId === user?._id ||
+        payment.memberName === user?.name
+
+    );
+
+
+
 
 
 
@@ -513,80 +442,144 @@ function Payments() {
         <div className="payments-page">
 
 
-            <h1>
-                💳 Payment
+            <h1 className="animated-heading">
+                💳 My Payments
             </h1>
 
 
 
 
             {
-
-                plan ?
-
-
+                plan &&
 
                 <div className="member-payment-card">
 
 
-
                     <h2>
-
                         {plan.duration || plan.name}
-
                     </h2>
 
 
-
-
-
                     <h1>
-
                         ₹{plan.price}
-
                     </h1>
 
 
-
-
-
                     <button
-
                         onClick={proceedPayment}
-
                     >
 
                         Proceed to Payment
 
-
                     </button>
 
 
-
                 </div>
-
-
-
-
-
-                :
-
-
-
-                <p>
-
-                    No plan selected.
-
-                </p>
-
-
 
             }
 
 
 
-        </div>
 
+
+
+
+            <div className="payment-table-box">
+
+
+                <h2>
+                    Payment History
+                </h2>
+
+
+
+                {
+
+                myPayments.length === 0 ?
+
+                <p>
+                    No payments found.
+                </p>
+
+
+                :
+
+
+                <table>
+
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Plan</th>
+
+                            <th>Amount</th>
+
+                            <th>Method</th>
+
+                            <th>Status</th>
+
+
+                        </tr>
+
+
+                    </thead>
+
+
+
+                    <tbody>
+
+
+                    {
+
+                    myPayments.map(payment=>(
+
+
+                        <tr key={payment._id}>
+
+
+                            <td>
+                                {payment.plan}
+                            </td>
+
+
+                            <td>
+                                ₹{payment.amount}
+                            </td>
+
+
+                            <td>
+                                {payment.paymentMethod}
+                            </td>
+
+
+                            <td>
+                                {payment.status}
+                            </td>
+
+
+                        </tr>
+
+
+                    ))
+
+                    }
+
+
+                    </tbody>
+
+
+                </table>
+
+
+                }
+
+
+            </div>
+
+
+        </div>
 
     );
 

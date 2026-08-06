@@ -1,4 +1,5 @@
 const Member = require("../models/Member");
+const Payment = require("../models/Payment");
 
 
 // GET DASHBOARD STATS (LIVE DATA)
@@ -15,47 +16,32 @@ exports.getDashboardStats = async (req, res) => {
 
 
         // Active Memberships
+        // Based only on expiry date
         const activeMembers = await Member.countDocuments({
-            $or: [
-                { expiryDate: { $gte: today } },
-                { status: { $regex: /^active$/i } }
-            ]
+            expiryDate: {
+                $gte: today
+            }
         });
 
 
 
         // Expired Memberships
+        // Based only on expiry date
         const expiredPlans = await Member.countDocuments({
-            $or: [
-                { expiryDate: { $lt: today } },
-                { status: { $regex: /^expired$/i } }
-            ]
+            expiryDate: {
+                $lt: today
+            }
         });
 
 
 
-        // Revenue Calculation
-        const revenueData = await Member.aggregate([
+        // Revenue Calculation from Payments Collection
+        const revenueData = await Payment.aggregate([
             {
                 $group: {
                     _id: null,
                     totalRevenue: {
-                        $sum: {
-                            $ifNull: [
-                                "$price",
-                                {
-                                    $ifNull: [
-                                        "$amount",
-                                        {
-                                            $ifNull: [
-                                                "$planPrice",
-                                                "$fee"
-                                            ]
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
+                        $sum: "$amount"
                     }
                 }
             }

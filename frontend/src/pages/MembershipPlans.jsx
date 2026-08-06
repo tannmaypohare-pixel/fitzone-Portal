@@ -1,10 +1,10 @@
-import "./MembershipPlans.css";
-import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import "./MemberPlans.css";
 
 
-function MembershipPlans() {
+function MemberPlans() {
 
 
     const navigate = useNavigate();
@@ -12,21 +12,29 @@ function MembershipPlans() {
 
     const [plans, setPlans] = useState([]);
 
-    const [editPlan, setEditPlan] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    const [selectedPlan, setSelectedPlan] = useState(null);
 
 
 
-    useEffect(()=>{
+
+
+    useEffect(() => {
 
         fetchPlans();
 
-    },[]);
+    }, []);
 
 
 
-    const fetchPlans = async()=>{
 
-        try{
+
+
+    const fetchPlans = async () => {
+
+        try {
+
 
             const response = await axios.get(
                 "http://localhost:5001/api/plans"
@@ -36,40 +44,21 @@ function MembershipPlans() {
             setPlans(response.data);
 
 
-        }catch(error){
 
-            console.log("Error fetching plans:", error);
-
-        }
-
-    };
+        } catch(error) {
 
 
-
-
-
-    const handleDeletePlan = async(id)=>{
-
-
-        try{
-
-
-            await axios.delete(
-                `http://localhost:5001/api/plans/${id}`
+            console.log(
+                "Error fetching plans:",
+                error
             );
 
 
-            fetchPlans();
+        } finally {
 
-
-        }catch(error){
-
-
-            console.log("Delete error:", error);
-
+            setLoading(false);
 
         }
-
 
     };
 
@@ -77,92 +66,91 @@ function MembershipPlans() {
 
 
 
-    const handleUpdatePlan = async()=>{
 
 
-        try{
+    const handleSelectPlan = (plan) => {
 
 
-            await axios.put(
-
-                `http://localhost:5001/api/plans/${editPlan._id}`,
-
-                editPlan
-
-            );
-
-
-            setEditPlan(null);
-
-            fetchPlans();
-
-
-        }catch(error){
-
-
-            console.log("Update error:", error);
-
-
-        }
-
-
-    };
-
-
-
-
-
-    // FIXED SELECT PLAN FUNCTION
-
-    const handleSelectPlan = (plan)=>{
-
-
-        const selectedPlan = {
-
-
-            _id: plan._id,
-
-
-            name: plan.name || plan.duration,
-
-
-            duration: plan.duration || plan.name,
-
-
-            price: plan.price,
-
-
-            description: plan.description || "",
-
-
-            status: plan.status
-
-
-        };
-
-
-
-        console.log(
-            "Selected Plan:",
-            selectedPlan
-        );
+        setSelectedPlan(plan);
 
 
 
         localStorage.setItem(
-
             "selectedPlan",
+            JSON.stringify(plan)
+        );
 
-            JSON.stringify(selectedPlan)
+
+    };
+
+
+
+
+
+
+
+    const proceedPayment = () => {
+
+
+        if(!selectedPlan){
+
+            alert(
+                "Please select a plan first"
+            );
+
+            return;
+
+        }
+
+
+
+        navigate("/my-payments");
+
+
+    };
+
+
+
+
+
+
+
+    const normalizeDuration = (duration)=>{
+
+
+        if(!duration) return "";
+
+
+        return duration
+        .replace("Months","Month")
+        .replace("months","Month");
+
+
+    };
+
+
+
+
+
+
+
+    if(loading){
+
+
+        return (
+
+            <div className="loading">
+
+                Loading Plans...
+
+            </div>
 
         );
 
 
+    }
 
-        navigate("/payments");
 
-
-    };
 
 
 
@@ -170,37 +158,41 @@ function MembershipPlans() {
 
     return (
 
-        <div className="plans-container">
+
+        <>
 
 
-            <div className="plans-header">
+        <div className="bg-blob one"></div>
+
+        <div className="bg-blob two"></div>
 
 
-                <div className="plans-heading-wrap">
 
 
-                    <span className="plans-badge">
-                        GYM MEMBERSHIP
-                    </span>
+
+        <div className="member-plans-container">
 
 
-                    <h1 className="plans-title">
-                        💪 Membership Plans
-                    </h1>
 
 
-                    <p className="plans-subtitle">
-                        Choose the best membership plan for your fitness journey
-                    </p>
+
+            <h1>
+
+                Choose your plan
+
+            </h1>
 
 
-                    <span className="plans-underline"></span>
 
 
-                </div>
+
+            <p>
+
+                Pick the plan that fits — upgrade anytime.
+
+            </p>
 
 
-            </div>
 
 
 
@@ -209,99 +201,192 @@ function MembershipPlans() {
             <div className="plans-grid">
 
 
-                {
-                    plans.map((plan)=>(
 
-                        <div
-                            className="plan-card"
-                            key={plan._id}
-                        >
+            {
 
-
-                            <h2>
-                                {plan.name || plan.duration}
-                            </h2>
-
-
-                            <h3>
-                                ₹{plan.price}
-                            </h3>
-
-
-                            <p>
-                                {plan.duration}
-                            </p>
+                plans.map((plan,index)=>(
 
 
 
-                            {
-                                plan.description && (
-
-                                    <p>
-                                        {plan.description}
-                                    </p>
-
-                                )
-                            }
+                    <div
 
 
+                    key={plan._id}
 
 
-                            <div className="plan-buttons">
+                    className={
 
+                        selectedPlan?._id === plan._id
 
-                                <button
+                        ?
 
-                                    className="select-plan-btn"
+                        "plan-card selected"
 
-                                    onClick={()=>handleSelectPlan(plan)}
+                        :
 
-                                >
+                        "plan-card"
 
-                                    Select Plan
-
-                                </button>
+                    }
 
 
 
+                    onClick={()=>handleSelectPlan(plan)}
 
-                                <button
 
-                                    className="edit-plan-btn"
-
-                                    onClick={()=>setEditPlan(plan)}
-
-                                >
-
-                                    Edit
-
-                                </button>
+                    >
 
 
 
 
 
-                                <button
 
-                                    className="delete-plan-btn"
+                    {
 
-                                    onClick={()=>handleDeletePlan(plan._id)}
+                        index === 1 &&
 
-                                >
+                        <span className="popular-badge">
 
-                                    Delete
+                            Popular
 
-                                </button>
+                        </span>
 
-
-                            </div>
+                    }
 
 
 
-                        </div>
 
-                    ))
-                }
+
+
+
+
+
+                    <h2>
+
+                        {plan.name}
+
+                    </h2>
+
+
+
+
+
+
+
+                    <h3>
+
+
+                        ₹{plan.price}
+
+
+                        <span>
+
+                            /{normalizeDuration(plan.duration)}
+
+                        </span>
+
+
+                    </h3>
+
+
+
+
+
+
+
+
+
+                    <ul>
+
+
+                        <li>
+                            Full Gym Access
+                        </li>
+
+
+                        <li>
+                            Trainer Support
+                        </li>
+
+
+                        <li>
+                            Workout Plans
+                        </li>
+
+
+                        <li>
+                            Progress Tracking
+                        </li>
+
+
+                    </ul>
+
+
+
+
+
+
+
+
+
+                    {
+
+                    plan.description &&
+
+
+                    <p>
+
+                        {plan.description}
+
+                    </p>
+
+
+                    }
+
+
+
+
+
+
+
+
+
+                    <button>
+
+
+                    {
+
+                        selectedPlan?._id === plan._id
+
+                        ?
+
+                        "Selected ✓"
+
+                        :
+
+                        `Choose ${plan.name}`
+
+                    }
+
+
+
+                    </button>
+
+
+
+
+
+
+
+
+
+                    </div>
+
+
+
+                ))
+
+            }
+
 
 
             </div>
@@ -310,128 +395,43 @@ function MembershipPlans() {
 
 
 
-            {
-                editPlan && (
-
-                    <div className="edit-box">
-
-
-                        <h2>
-                            Edit Plan
-                        </h2>
-
-
-
-                        <input
-
-                            value={editPlan.name || ""}
-
-                            onChange={(e)=>
-                                setEditPlan({
-
-                                    ...editPlan,
-
-                                    name:e.target.value
-
-                                })
-                            }
-
-                        />
-
-
-
-                        <input
-
-                            value={editPlan.duration || ""}
-
-                            onChange={(e)=>
-                                setEditPlan({
-
-                                    ...editPlan,
-
-                                    duration:e.target.value
-
-                                })
-                            }
-
-                        />
-
-
-
-                        <input
-
-                            value={editPlan.price || ""}
-
-                            onChange={(e)=>
-                                setEditPlan({
-
-                                    ...editPlan,
-
-                                    price:e.target.value
-
-                                })
-                            }
-
-                        />
-
-
-
-                        <input
-
-                            value={editPlan.description || ""}
-
-                            onChange={(e)=>
-                                setEditPlan({
-
-                                    ...editPlan,
-
-                                    description:e.target.value
-
-                                })
-                            }
-
-                        />
 
 
 
 
-
-                        <button
-
-                            onClick={handleUpdatePlan}
-
-                        >
-
-                            Update
-
-                        </button>
+            <button
 
 
+            className="payment-btn"
 
-                        <button
 
-                            onClick={()=>setEditPlan(null)}
+            onClick={proceedPayment}
 
-                        >
 
-                            Cancel
+            >
 
-                        </button>
+
+                Continue to payment
+
+
+            </button>
 
 
 
-                    </div>
-
-                )
-            }
 
 
 
         </div>
 
+
+        </>
+
+
     );
+
 
 }
 
 
-export default MembershipPlans;
+
+export default MemberPlans;

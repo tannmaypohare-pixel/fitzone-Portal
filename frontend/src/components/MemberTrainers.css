@@ -1,0 +1,30 @@
+.trainers-section {
+    margin-top: 25px;
+}
+
+.trainers-section h2 {
+    margin-bottom: 15px;
+}
+
+.trainer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.trainer-card {
+    background: rgba(255,255,255,0.08);
+    padding: 20px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.trainer-card h3 {
+    margin-bottom: 10px;
+}
+
+.trainer-card p {
+    margin: 5px 0;
+    opacity: 0.8;
+}

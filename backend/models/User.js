@@ -27,6 +27,18 @@ const userSchema = new mongoose.Schema({
     },
 
 
+    // Trainer Details
+    specialization: {
+        type: String
+    },
+
+
+    experience: {
+        type: String
+    },
+
+
+
     // Login provider
     provider: {
         type: String,

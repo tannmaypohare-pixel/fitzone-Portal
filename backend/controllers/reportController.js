@@ -197,11 +197,62 @@ const getPlanDistributionReport = async (req, res) => {
 
 
 
+// Expiring Memberships Report
+const getExpiringMemberships = async (req, res) => {
+
+    try {
+
+        const today = new Date();
+
+        const upcoming = new Date();
+        upcoming.setDate(today.getDate() + 7);
+
+
+        const members = await Member.find({
+
+            expiryDate: {
+                $gte: today,
+                $lte: upcoming
+            }
+
+        }).sort({
+
+            expiryDate: 1
+
+        });
+
+
+        const report = members.map((member) => ({
+
+            name: member.name,
+            plan: member.membershipType,
+            expiryDate: member.expiryDate
+
+        }));
+
+
+        res.json(report);
+
+
+
+    } catch(error) {
+
+        res.status(500).json({
+            message: error.message
+        });
+
+    }
+
+};
+
+
+
 
 module.exports = {
 
     getRevenueReport,
     getMemberGrowthReport,
-    getPlanDistributionReport
+    getPlanDistributionReport,
+    getExpiringMemberships
 
 };

@@ -14,7 +14,7 @@ const planRoutes = require("./routes/planRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
 const memberDashboardRoutes = require("./routes/memberDashboardRoutes");
 const reportRoutes = require("./routes/reportRoutes");
-
+const trainerRoutes = require("./routes/trainerRoutes");
 
 
 connectDB();
@@ -65,6 +65,8 @@ app.use("/api/payments", paymentRoutes);
 
 // Member Dashboard API Route
 app.use("/api/member", memberDashboardRoutes);
+
+app.use("/api/trainers", trainerRoutes);
 
 
 

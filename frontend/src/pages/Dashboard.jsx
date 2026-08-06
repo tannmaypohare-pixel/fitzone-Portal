@@ -3,60 +3,19 @@ import { useNavigate } from "react-router-dom";
 import "./Dashboard.css";
 
 
-const navItems = [
-  { 
-    label: "Dashboard", 
-    icon: "🏠", 
-    path: "/dashboard" 
-  },
-
-  { 
-    label: "Members", 
-    icon: "👥", 
-    path: "/members" 
-  },
-
-  { 
-    label: "Trainers", 
-    icon: "🏋", 
-    path: "/trainers" 
-  },
-
-  { 
-    label: "Membership", 
-    icon: "💳", 
-    path: "/membership" 
-  },
-
-  { 
-    label: "Payments", 
-    icon: "💰", 
-    path: "/payments" 
-  },
-
-  { 
-    label: "Reports", 
-    icon: "📊", 
-    path: "/reports" 
-  },
-];
-
-
 function formatRevenue(amount) {
 
-  if (amount >= 10000000) {
+  if (amount >= 10000000)
     return `₹${(amount / 10000000).toFixed(1)}Cr`;
-  }
 
-  if (amount >= 100000) {
+  if (amount >= 100000)
     return `₹${(amount / 100000).toFixed(1)}L`;
-  }
 
-  if (amount >= 1000) {
+  if (amount >= 1000)
     return `₹${(amount / 1000).toFixed(1)}K`;
-  }
 
   return `₹${amount}`;
+
 }
 
 
@@ -66,10 +25,8 @@ function getDaysLeft(date) {
   const today = new Date();
   const expiry = new Date(date);
 
-  const difference = expiry - today;
-
   return Math.ceil(
-    difference / (1000 * 60 * 60 * 24)
+    (expiry - today) / (1000 * 60 * 60 * 24)
   );
 
 }
@@ -78,88 +35,79 @@ function getDaysLeft(date) {
 
 function Dashboard() {
 
+
   const navigate = useNavigate();
 
 
   const storedUser = localStorage.getItem("user");
 
+
   const user = storedUser
     ? JSON.parse(storedUser)
     : {
-        name: "Admin",
-        role: "ADMIN"
+        name:"Admin",
+        role:"ADMIN"
       };
 
 
-  const [stats, setStats] = useState({
-    totalMembers: 0,
-    activeMembers: 0,
-    expiredPlans: 0,
-    revenue: 0
+
+  const [stats,setStats] = useState({
+
+    totalMembers:0,
+    activeMembers:0,
+    expiredPlans:0,
+    revenue:0
+
   });
 
 
-  const [expiringMembers, setExpiringMembers] = useState([]);
+
+  const [expiringMembers,setExpiringMembers] = useState([]);
 
 
-  const [loading, setLoading] = useState(true);
+  const [loading,setLoading] = useState(true);
 
 
 
-  useEffect(() => {
+
+
+  useEffect(()=>{
 
 
     fetch("http://localhost:5001/api/dashboard/stats")
 
-      .then((res) => res.json())
+    .then(res=>res.json())
 
-      .then((data) => {
+    .then(data=>{
 
-        console.log("Dashboard Data:", data);
+      setStats(data);
+      setLoading(false);
 
-        setStats(data);
+    })
 
-        setLoading(false);
+    .catch(()=>setLoading(false));
 
-      })
-
-      .catch((error) => {
-
-        console.log(error);
-
-        setLoading(false);
-
-      });
 
 
 
     fetch("http://localhost:5001/api/dashboard/expiring")
 
-      .then((res) => res.json())
+    .then(res=>res.json())
 
-      .then((data) => {
+    .then(data=>{
 
-        console.log("Expiring Members:", data);
+      setExpiringMembers(data);
 
-        setExpiringMembers(data);
-
-      })
-
-      .catch((error) => {
-
-        console.log(error);
-
-      });
+    });
 
 
-
-  }, []);
+  },[]);
 
 
 
 
 
-  const logout = () => {
+  const logout = ()=>{
 
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -173,57 +121,55 @@ function Dashboard() {
 
 
 
-  const cards = [
+  const cards=[
+
 
     {
-      title: "Total Members",
-      value: stats.totalMembers,
-      description: "Registered members",
-      accent: "#10b981",
-      icon: "👥"
+      title:"Total Members",
+      value:stats.totalMembers,
+      description:"Registered members",
+      icon:"👥",
+      accent:"#10b981"
     },
 
-    {
-      title: "Active Memberships",
-      value: stats.activeMembers,
-      description: "Currently active",
-      accent: "#3b82f6",
-      icon: "✅"
-    },
 
     {
-      title: "Expired Plans",
-      value: stats.expiredPlans,
-      description: "Need renewal",
-      accent: "#ef4444",
-      icon: "⏳"
+      title:"Active Memberships",
+      value:stats.activeMembers,
+      description:"Currently active",
+      icon:"✅",
+      accent:"#3b82f6"
     },
 
+
     {
-      title: "Revenue",
-      value: formatRevenue(stats.revenue),
-      description: "Total revenue",
-      accent: "#f59e0b",
-      icon: "💰"
+      title:"Expired Plans",
+      value:stats.expiredPlans,
+      description:"Need renewal",
+      icon:"⏳",
+      accent:"#ef4444"
+    },
+
+
+    {
+      title:"Revenue",
+      value:formatRevenue(stats.revenue),
+      description:"Total revenue",
+      icon:"💰",
+      accent:"#f59e0b",
+      revenue:true
     }
+
 
   ];
 
 
 
-  if (loading) {
 
-    return (
 
-      <div className="dashboard-container">
+  if(loading){
 
-        <h1>
-          Loading Dashboard...
-        </h1>
-
-      </div>
-
-    );
+    return <h1>Loading Dashboard...</h1>;
 
   }
 
@@ -231,323 +177,421 @@ function Dashboard() {
 
 
 
-  return (
+return (
 
-    <div className="dashboard">
+<div className="dashboard">
 
 
-      <aside className="sidebar">
+<main className="main-content">
 
-        <div className="brand">
 
-          <div className="brand-icon">
-            🏋
-          </div>
 
+<header className="topbar">
 
-          <div>
 
-            <h2>
-              FitZone
-            </h2>
+<div>
 
-            <p>
-              Gym admin panel
-            </p>
+<h1>
+Welcome back, {user?.name || "Admin"} 👋
+</h1>
 
-          </div>
 
+<p>
+Manage your gym operations with intelligence and speed.
+</p>
 
-        </div>
 
+<small>
+Role: {user?.role}
+</small>
 
 
-        <nav>
+</div>
 
-          <ul>
 
-            {navItems.map((item) => (
 
-              <li
-                key={item.label}
-                onClick={() => navigate(item.path)}
-              >
+<div className="topbar-actions">
 
-                <span>{item.icon}</span>
-                <span>{item.label}</span>
 
-              </li>
+<button
+className="secondary-btn"
+onClick={()=>navigate("/add-member")}
+>
++ New member
+</button>
 
-            ))}
 
 
-          </ul>
+<button
+className="primary-btn"
+onClick={logout}
+>
+Logout
+</button>
 
-        </nav>
 
+</div>
 
-      </aside>
 
+</header>
 
 
 
 
-      <main className="main-content">
 
 
-        <header className="topbar">
+<section className="stats">
 
 
-          <div>
+{
+cards.map(card=>(
 
-            <h1>
-              Welcome back, {user?.name || "Admin"} 👋
-            </h1>
 
+<article
 
-            <p>
-              Manage your gym operations with intelligence and speed.
-            </p>
+key={card.title}
 
+className="stat-card"
 
-            <small>
-              Role: {user?.role || "ADMIN"}
-            </small>
+style={{
+borderColor:card.accent
+}}
 
+>
 
-          </div>
 
+<div className="stat-header">
 
 
-          <div className="topbar-actions">
+<h3>
 
+{card.icon} {card.title}
 
-            <button
-              className="secondary-btn"
-              onClick={() => navigate("/add-member")}
-            >
+</h3>
 
-              + New member
 
-            </button>
+<span className="stat-badge">
+Live
+</span>
 
 
+</div>
 
-            <button
-              className="primary-btn"
-              onClick={logout}
-            >
 
-              Logout
 
-            </button>
 
+<h1 className={card.revenue ? "revenue-value":""}>
 
-          </div>
+{card.value}
 
+</h1>
 
-        </header>
 
 
+<p>
+{card.description}
+</p>
 
 
+</article>
 
-        <section className="stats">
 
-          {cards.map((card) => (
+))
+}
 
-            <article
-              className="stat-card"
-              key={card.title}
-              style={{
-                borderColor: card.accent
-              }}
-            >
 
-              <div className="stat-header">
+</section>
 
-                <h3>
-                  {card.icon} {card.title}
-                </h3>
 
 
-                <span className="stat-badge">
-                  Live
-                </span>
 
 
-              </div>
 
 
-              <h1>
-                {card.value}
-              </h1>
 
+<section className="expiring-section">
 
-              <p>
-                {card.description}
-              </p>
 
+<div className="activity-header">
 
-            </article>
 
-          ))}
+<h2>
+⚠️ Expiring Soon
+</h2>
 
-        </section>
 
+<span className="badge pulse-badge">
 
+{expiringMembers.length} Members
 
+</span>
 
 
-        <section className="expiring-section">
+</div>
 
-          <div className="activity-header">
 
-            <h2>
-              ⚠️ Expiring Soon
-            </h2>
 
-            <span className="badge pulse-badge">
-              {expiringMembers.length} Members
-            </span>
 
 
-          </div>
+{
+expiringMembers.length===0
 
+?
 
+<p className="empty-state">
+No memberships expiring soon 🎉
+</p>
 
-          {expiringMembers.length === 0 ? (
 
-            <p>
-              No memberships expiring soon 🎉
-            </p>
+:
 
-          ) : (
+<div className="table-wrap">
 
-            expiringMembers.map((member) => (
 
-              <div
-                className="expiring-member"
-                key={member._id}
-              >
+<table className="expiring-table">
 
-                <h3>
-                  {member.name}
-                </h3>
 
+<thead>
 
-                <p>
-                  💳 {member.membershipType} Plan
-                </p>
+<tr>
 
+<th>Member</th>
+<th>Plan</th>
+<th>Expiry Date</th>
+<th>Days Left</th>
 
-                <p>
-                  📅 Expires:
-                  {" "}
-                  {new Date(member.expiryDate).toLocaleDateString()}
-                </p>
+</tr>
 
+</thead>
 
-                <span>
-                  ⏳ {getDaysLeft(member.expiryDate)} days left
-                </span>
 
 
-              </div>
+<tbody>
 
-            ))
 
-          )}
+{
 
+expiringMembers.map(member=>{
 
-        </section>
 
+const daysLeft=getDaysLeft(member.expiryDate);
 
 
 
+return (
 
-        <section className="vitals">
+<tr key={member._id}>
 
-          <div className="activity-header">
 
-            <h2>
-              Gym Pulse
-            </h2>
+<td className="member-name">
+{member.name}
+</td>
 
 
-            <span className="badge pulse-badge">
+<td>
+💳 {member.membershipType}
+</td>
 
-              <span className="pulse-dot"></span>
-              Live
 
-            </span>
+<td>
+📅 {new Date(member.expiryDate).toLocaleDateString()}
+</td>
 
 
-          </div>
 
+<td>
 
+<span className="days-left">
 
-          <div className="vitals-body">
+⏳ {daysLeft} days
 
+</span>
 
-            <div className="heart-rate">
 
-              <span className="heart-icon">
-                ❤️
-              </span>
+</td>
 
 
-              <div>
+</tr>
 
-                <h1>
-                  {stats.activeMembers > 0 ? "72" : "--"} <small>bpm</small>
-                </h1>
 
+)
 
-                <p>
-                  Live activity rate
-                </p>
 
+})
 
-              </div>
+}
 
 
-            </div>
+</tbody>
 
 
+</table>
 
-            <div className="ecg-wrap">
 
-              <svg
-                className="ecg-line"
-                viewBox="0 0 600 100"
-                preserveAspectRatio="none"
-              >
+</div>
 
-                <polyline
-                  className="ecg-path"
-                  fill="none"
-                  points="0,50 40,50 55,20 70,80 85,50 130,50 150,50 165,10 180,90 195,50 240,50 260,50 275,20 290,80 305,50 350,50 370,50 385,10 400,90 415,50 460,50 480,50 495,20 510,80 525,50 570,50 600,50"
-                />
 
-              </svg>
+}
 
 
-            </div>
+</section>
 
 
-          </div>
 
 
-        </section>
 
 
-      </main>
 
 
-    </div>
 
-  );
+<section className="vitals">
+
+
+<div className="activity-header">
+
+
+<h2>
+Gym Pulse
+</h2>
+
+
+<span className="badge pulse-badge">
+
+<span className="pulse-dot"></span>
+
+Live
+
+</span>
+
+
+</div>
+
+
+
+
+<div className="vitals-body">
+
+
+<div className="heart-rate">
+
+
+<span className="heart-icon">
+
+❤️
+
+</span>
+
+
+
+<div>
+
+
+<h1>
+
+{stats.activeMembers > 0 ? "72" : "--"}
+
+<small>
+ bpm
+</small>
+
+</h1>
+
+
+
+<p>
+Live activity rate
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div className="ecg-wrap">
+
+
+<svg
+
+className="ecg-line"
+
+viewBox="0 0 600 100"
+
+preserveAspectRatio="none"
+
+>
+
+
+<polyline
+
+className="ecg-path"
+
+fill="none"
+
+points="
+0,50 
+40,50 
+55,20 
+70,80 
+85,50 
+130,50 
+150,50 
+165,10 
+180,90 
+195,50 
+240,50 
+260,50 
+275,20 
+290,80 
+305,50 
+350,50 
+370,50 
+385,10 
+400,90 
+415,50 
+460,50 
+480,50 
+495,20 
+510,80 
+525,50 
+570,50 
+600,50
+"
+
+/>
+
+
+</svg>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+</section>
+
+
+
+
+
+</main>
+
+
+</div>
+
+
+);
+
 
 }
 

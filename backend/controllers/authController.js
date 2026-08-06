@@ -9,7 +9,6 @@ const { OAuth2Client } = require("google-auth-library");
 const transporter = require("../config/mail");
 
 
-
 // CREATE JWT TOKEN
 
 const createToken = (user) => {
@@ -217,13 +216,6 @@ exports.loginUser = async(req,res)=>{
 
 
 };
-
-
-
-
-
-
-
 // GOOGLE LOGIN
 
 exports.googleLogin = async(req,res)=>{
@@ -232,14 +224,17 @@ exports.googleLogin = async(req,res)=>{
     try{
 
 
-        const {token} = req.body;
+        console.log("GOOGLE LOGIN BODY:", req.body);
+
+
+        const { credential } = req.body;
 
 
 
-        if(!token){
+        if(!credential){
 
             return res.status(400).json({
-                message:"Google token missing"
+                message:"Google credential missing"
             });
 
         }
@@ -254,9 +249,9 @@ exports.googleLogin = async(req,res)=>{
 
         const ticket = await client.verifyIdToken({
 
-            id_token:token,
+            idToken: credential,
 
-            audience:process.env.GOOGLE_CLIENT_ID
+            audience: process.env.GOOGLE_CLIENT_ID
 
         });
 
@@ -290,9 +285,9 @@ exports.googleLogin = async(req,res)=>{
 
                 email,
 
-                profileImage:picture,
+                profileImage: picture,
 
-                googleId:sub,
+                googleId: sub,
 
                 provider:"google",
 
@@ -315,7 +310,7 @@ exports.googleLogin = async(req,res)=>{
 
         res.json({
 
-            token:jwtToken,
+            token: jwtToken,
 
             user
 
@@ -326,7 +321,7 @@ exports.googleLogin = async(req,res)=>{
     }catch(error){
 
 
-        console.log(error);
+        console.log("GOOGLE LOGIN ERROR:", error);
 
 
         res.status(500).json({
@@ -340,7 +335,6 @@ exports.googleLogin = async(req,res)=>{
 
 
 };
-
 
 
 
